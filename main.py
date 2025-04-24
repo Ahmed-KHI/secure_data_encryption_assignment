@@ -2,7 +2,7 @@ import streamlit as st
 import hashlib
 from cryptography.fernet import Fernet
 
-# ---------- 0. ONE-TIME INITIALISATION ----------
+# INITIALISATION
 if "cipher" not in st.session_state:
     KEY = Fernet.generate_key()
     st.session_state.cipher = Fernet(KEY)
@@ -15,7 +15,7 @@ cipher = st.session_state.cipher
 stored_data = st.session_state.stored_data
 
 
-# ---------- 1. HELPERS ----------
+# HELPERS
 def hash_passkey(passkey: str) -> str:
     return hashlib.sha256(passkey.encode()).hexdigest()
 
@@ -34,7 +34,7 @@ def decrypt_data(enc_text: str, passkey: str) -> str | None:
     return None
 
 
-# ---------- 2. CUSTOM STYLES ----------
+# CUSTOM STYLES
 st.markdown("""
     <style>
         .main {
@@ -69,13 +69,13 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# ---------- 3. UI ----------
+# UI
 st.title("🌟 SecureVault: Luxe Data Locker")
 
 menu = ["🏠 Home", "🔐 Store Data", "🔓 Retrieve Data", "🔑 Login"]
 choice = st.sidebar.radio("🌐 Navigate", menu)
 
-# ---- HOME
+# HOME
 if choice == "🏠 Home":
     st.subheader("Welcome to your Private Vault 💼")
     st.markdown("""
@@ -86,7 +86,7 @@ if choice == "🏠 Home":
         💡 Use the sidebar to get started.
     """, unsafe_allow_html=True)
 
-# ---- STORE
+# STORE
 elif choice == "🔐 Store Data":
     st.subheader("🔐 Lock it Up")
     with st.form("store_form", clear_on_submit=True):
@@ -105,7 +105,7 @@ elif choice == "🔐 Store Data":
         else:
             st.error("❌ Both fields are required to continue.")
 
-# ---- RETRIEVE
+# RETRIEVE
 elif choice == "🔓 Retrieve Data":
     st.subheader("🔓 Unlock a Secret")
 
@@ -132,7 +132,7 @@ elif choice == "🔓 Retrieve Data":
         else:
             st.error("❌ Both fields are required.")
 
-# ---- LOGIN
+# LOGIN
 elif choice == "🔑 Login":
     st.subheader("🛡️ Re-authenticate")
     with st.form("login_form"):
